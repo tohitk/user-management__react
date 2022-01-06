@@ -8,22 +8,29 @@ import classes from "./AddUser.module.css";
 const AddUser = (props) => {
   const [enteredUsername, setEnteredUsername] = useState("");
   const [enteredAge, setEnteredAge] = useState("");
-  const [isError, setIsError] = useState(false);
+  const [isError, setIsError] = useState();
 
   function formSumbitHandler(event) {
     event.preventDefault();
-    if (enteredUsername.trim().length === 0 || enteredAge.trim().length === 0)
-      setIsError(true);
-    if (+enteredAge < 1) setIsError(true);
+    if (enteredUsername.trim().length === 0 || enteredAge.trim().length === 0) {
+      setIsError({
+        title: "Invalid Input",
+        message: "Please enter valid input",
+      });
+      return;
+    }
+    if (+enteredAge < 1) {
+      setIsError({
+        title: "Invalid Input",
+        message: "Please enter a valid age",
+      });
+      return;
+    }
 
     props.onAddUser(enteredUsername, enteredAge);
 
     setEnteredUsername("");
     setEnteredAge("");
-  }
-
-  function removeModalHandler() {
-    setIsError(false);
   }
 
   function usernameChangeHandler(event) {
@@ -32,14 +39,16 @@ const AddUser = (props) => {
   function ageChangeHandler(event) {
     setEnteredAge(event.target.value);
   }
-
+  function removeModalHandler() {
+    setIsError(null);
+  }
   return (
     <div>
       {isError && (
         <ErrorModal
-          title="An error occured"
-          message="Something went wrong"
-          onClick={removeModalHandler}
+          title={isError.title}
+          message={isError.message}
+          onConfirm={removeModalHandler}
         />
       )}
 
