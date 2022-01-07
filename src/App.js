@@ -13,10 +13,10 @@ function App() {
     });
   }
   return (
-    <div>
+    <React.Fragment>
       <AddUser onAddUser={formSumbitHandler} />
       <UsersList users={userList} />
-    </div>
+    </React.Fragment>
   );
 }
 

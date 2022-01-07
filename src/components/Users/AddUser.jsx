@@ -43,7 +43,7 @@ const AddUser = (props) => {
     setIsError(null);
   }
   return (
-    <div>
+    <React.Fragment>
       {isError && (
         <ErrorModal
           title={isError.title}
@@ -71,7 +71,7 @@ const AddUser = (props) => {
           <Button type="sumbit">Add User</Button>
         </form>
       </Card>
-    </div>
+    </React.Fragment>
   );
 };
 
