@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 import Card from "../UI/Card";
 import Button from "../UI/Button";
@@ -6,12 +6,17 @@ import ErrorModal from "../UI/ErrorModal";
 import classes from "./AddUser.module.css";
 
 const AddUser = (props) => {
-  const [enteredUsername, setEnteredUsername] = useState("");
-  const [enteredAge, setEnteredAge] = useState("");
+  const nameInputRef = useRef();
+  const ageInputRef = useRef();
+
   const [isError, setIsError] = useState();
 
   function formSumbitHandler(event) {
     event.preventDefault();
+
+    const enteredUsername = nameInputRef.current.value;
+    const enteredAge = ageInputRef.current.value;
+
     if (enteredUsername.trim().length === 0 || enteredAge.trim().length === 0) {
       setIsError({
         title: "Invalid Input",
@@ -29,16 +34,10 @@ const AddUser = (props) => {
 
     props.onAddUser(enteredUsername, enteredAge);
 
-    setEnteredUsername("");
-    setEnteredAge("");
+    nameInputRef.current.value = "";
+    ageInputRef.current.value = "";
   }
 
-  function usernameChangeHandler(event) {
-    setEnteredUsername(event.target.value);
-  }
-  function ageChangeHandler(event) {
-    setEnteredAge(event.target.value);
-  }
   function removeModalHandler() {
     setIsError(null);
   }
@@ -55,19 +54,9 @@ const AddUser = (props) => {
       <Card className={classes.input}>
         <form onSubmit={formSumbitHandler}>
           <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            onChange={usernameChangeHandler}
-            value={enteredUsername}
-          />
+          <input type="text" id="username" ref={nameInputRef} />
           <label htmlFor="age">Age (Years)</label>
-          <input
-            type="number"
-            id="age"
-            onChange={ageChangeHandler}
-            value={enteredAge}
-          />
+          <input type="number" id="age" ref={ageInputRef} />
           <Button type="sumbit">Add User</Button>
         </form>
       </Card>
